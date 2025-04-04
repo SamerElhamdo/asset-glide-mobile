@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/wallet/BackButton";
 import { AlertTriangle } from "lucide-react";
 
 const NotFound = () => {
@@ -27,12 +28,15 @@ const NotFound = () => {
         <p className="text-white/70 mb-6">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <Button 
-          onClick={() => navigate("/")}
-          className="bg-white/20 hover:bg-white/30 text-white"
-        >
-          Return to Home
-        </Button>
+        <div className="flex justify-center space-x-3">
+          <BackButton />
+          <Button 
+            onClick={() => navigate("/")}
+            className="bg-white/20 hover:bg-white/30 text-white"
+          >
+            Return to Home
+          </Button>
+        </div>
       </div>
     </div>
   );

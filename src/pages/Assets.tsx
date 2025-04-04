@@ -1,5 +1,6 @@
 
 import { BottomNav } from "@/components/wallet/BottomNav";
+import { BackButton } from "@/components/wallet/BackButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Coins, Tag } from "lucide-react";
 
@@ -47,8 +48,13 @@ const Assets = () => {
   return (
     <div className="min-h-screen pb-20">
       <header className="wallet-gradient text-white p-4">
-        <h1 className="text-xl font-bold">Assets</h1>
-        <p className="text-white/70 text-sm">Manage your tokens and NFTs</p>
+        <div className="flex items-center">
+          <BackButton to="/" />
+          <div>
+            <h1 className="text-xl font-bold">Assets</h1>
+            <p className="text-white/70 text-sm">Manage your tokens and NFTs</p>
+          </div>
+        </div>
       </header>
       
       <main className="p-4">

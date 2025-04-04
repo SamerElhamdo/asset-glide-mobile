@@ -1,9 +1,9 @@
-
 import { BottomNav } from "@/components/wallet/BottomNav";
+import { BackButton } from "@/components/wallet/BackButton";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Shield, Fingerprint, Lock, Eye, KeyRound } from "lucide-react";
+import { Shield, Fingerprint, Lock, Eye, KeyRound } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -38,14 +38,7 @@ const SecurityCenter = () => {
     <div className="min-h-screen pb-20">
       <header className="wallet-gradient text-white p-4">
         <div className="flex items-center">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="mr-2 text-white" 
-            onClick={() => navigate('/settings')}
-          >
-            <ArrowLeft size={20} />
-          </Button>
+          <BackButton to="/settings" />
           <div>
             <h1 className="text-xl font-bold">Security Center</h1>
             <p className="text-white/70 text-sm">Protect your wallet and assets</p>

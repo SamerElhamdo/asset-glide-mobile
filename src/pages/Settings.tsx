@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { BottomNav } from "@/components/wallet/BottomNav";
+import { BackButton } from "@/components/wallet/BackButton";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { 
@@ -81,8 +83,13 @@ const Settings = () => {
   return (
     <div className="min-h-screen pb-20">
       <header className="wallet-gradient text-white p-4">
-        <h1 className="text-xl font-bold">Settings</h1>
-        <p className="text-white/70 text-sm">Configure your wallet</p>
+        <div className="flex items-center">
+          <BackButton to="/" />
+          <div>
+            <h1 className="text-xl font-bold">Settings</h1>
+            <p className="text-white/70 text-sm">Configure your wallet</p>
+          </div>
+        </div>
       </header>
       
       <main className="p-4">

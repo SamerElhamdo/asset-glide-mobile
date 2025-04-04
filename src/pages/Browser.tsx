@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { BottomNav } from "@/components/wallet/BottomNav";
+import { BackButton } from "@/components/wallet/BackButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -63,6 +64,11 @@ const Browser = () => {
   return (
     <div className="min-h-screen pb-20">
       <header className="bg-background border-b p-4">
+        <div className="flex items-center mb-2">
+          <BackButton to="/" />
+          <h1 className="text-xl font-bold">Browser</h1>
+        </div>
+        
         <form onSubmit={handleSearch} className="flex items-center space-x-2">
           <Button type="button" size="icon" variant="ghost" className="h-9 w-9 shrink-0">
             <ArrowLeft size={20} />
