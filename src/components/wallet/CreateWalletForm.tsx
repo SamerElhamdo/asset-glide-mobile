@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Check, Copy, Eye, EyeOff, RefreshCw, Shield, AlertCircle, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface CreateWalletFormProps {
   onComplete: () => void;
@@ -49,6 +51,7 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
   const [copied, setCopied] = useState(false);
   const [verificationWords, setVerificationWords] = useState<string[]>([]);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const [backupAcknowledged, setBackupAcknowledged] = useState(false);
   
   const copyToClipboard = () => {
     navigator.clipboard.writeText(mockSeedPhrase);
@@ -250,6 +253,14 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
             </p>
           </div>
           
+          <Alert variant="destructive" className="mb-4 border-red-400 dark:border-red-800 bg-red-50 dark:bg-red-900/20">
+            <AlertCircle className="h-5 w-5" />
+            <AlertTitle className="text-red-800 dark:text-red-400 font-bold">Critical Security Alert</AlertTitle>
+            <AlertDescription className="text-red-700 dark:text-red-300">
+              Your seed phrase is the <strong>only way</strong> to recover your wallet. Never share it with anyone and store it offline in multiple secure locations.
+            </AlertDescription>
+          </Alert>
+          
           <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center text-yellow-700 dark:text-yellow-500">
@@ -289,17 +300,33 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
             </div>
           </div>
           
-          <div className="bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 p-4 rounded-lg text-sm">
+          <div className="bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 p-4 rounded-lg text-sm mt-4">
             <p className="font-medium">Never share your seed phrase!</p>
             <p className="mt-1">
               Anyone with this phrase can steal your assets. Never share it with anyone or store it digitally.
             </p>
           </div>
           
+          <div className="mt-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="backup-confirm" 
+                checked={backupAcknowledged}
+                onCheckedChange={(checked) => setBackupAcknowledged(!!checked)}
+              />
+              <label
+                htmlFor="backup-confirm"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                I have written down my seed phrase and stored it securely
+              </label>
+            </div>
+          </div>
+          
           <Button 
             className="w-full mt-4" 
             onClick={handleNextStep}
-            disabled={!showSeed}
+            disabled={!showSeed || !backupAcknowledged}
           >
             I've written it down
           </Button>
