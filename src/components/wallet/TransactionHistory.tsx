@@ -17,23 +17,39 @@ interface TransactionHistoryProps {
 }
 
 export function TransactionHistory({ transactions }: TransactionHistoryProps) {
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1 }
+  };
+
   const renderIcon = (type: Transaction['type']) => {
     switch (type) {
       case 'send':
         return (
-          <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-500">
+          <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-500">
             <ArrowUp size={16} />
           </div>
         );
       case 'receive':
         return (
-          <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500">
+          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500">
             <ArrowDown size={16} />
           </div>
         );
       case 'swap':
         return (
-          <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-500">
+          <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-500">
             <Repeat size={16} />
           </div>
         );
@@ -50,24 +66,9 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
         return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
     }
   };
-  
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05
-      }
-    }
-  };
-  
-  const item = {
-    hidden: { y: 10, opacity: 0 },
-    show: { y: 0, opacity: 1 }
-  };
 
   return (
-    <div className="mt-6">
+    <div className="mt-4">
       <h2 className="text-lg font-semibold mb-2">Recent Transactions</h2>
       
       {transactions.length === 0 ? (
@@ -76,16 +77,16 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
         </div>
       ) : (
         <motion.div
-          variants={container}
+          variants={containerVariants}
           initial="hidden"
-          animate="show"
+          animate="visible"
           className="space-y-2"
         >
           {transactions.map((tx) => (
             <motion.div 
               key={tx.id}
-              variants={item}
-              className="flex items-center p-3 bg-background rounded-lg border border-gray-100 dark:border-gray-800"
+              variants={itemVariants}
+              className="flex items-center p-3 bg-background rounded-xl border border-gray-100 dark:border-gray-800 hover:bg-muted/50 transition-colors"
             >
               {renderIcon(tx.type)}
               

@@ -19,9 +19,10 @@ interface TokenListProps {
 export function TokenList({ tokens }: TokenListProps) {
   const { toast } = useToast();
   
-  const container = {
+  // Animation variants
+  const containerVariants = {
     hidden: { opacity: 0 },
-    show: {
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1
@@ -29,9 +30,9 @@ export function TokenList({ tokens }: TokenListProps) {
     }
   };
   
-  const item = {
+  const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 }
+    visible: { y: 0, opacity: 1 }
   };
 
   return (
@@ -42,7 +43,7 @@ export function TokenList({ tokens }: TokenListProps) {
         <div className="text-center p-6 bg-gray-50 dark:bg-gray-800/30 rounded-xl">
           <p className="text-muted-foreground">No tokens found</p>
           <button 
-            className="mt-2 text-primary text-sm font-medium"
+            className="mt-2 text-primary text-sm font-medium rounded-xl"
             onClick={() => {
               toast({
                 title: "Coming soon",
@@ -56,15 +57,15 @@ export function TokenList({ tokens }: TokenListProps) {
       ) : (
         <motion.div
           className="space-y-1 rounded-xl overflow-hidden bg-background"
-          variants={container}
+          variants={containerVariants}
           initial="hidden"
-          animate="show"
+          animate="visible"
         >
           {tokens.map((token) => (
             <motion.div 
               key={token.id}
-              className="token-row"
-              variants={item}
+              className="p-3 flex items-center rounded-xl hover:bg-muted/50 transition-colors"
+              variants={itemVariants}
             >
               <div className="w-10 h-10 rounded-full mr-3 flex-shrink-0 bg-gray-100 dark:bg-gray-800 overflow-hidden">
                 <img 

@@ -12,10 +12,10 @@ export function WalletContent({ tokens, transactions }: WalletContentProps) {
   return (
     <main className="p-4">
       <Tabs defaultValue="tokens" className="w-full">
-        <TabsList className="w-full mb-4">
-          <TabsTrigger value="tokens" className="flex-1">Tokens</TabsTrigger>
-          <TabsTrigger value="nfts" className="flex-1">NFTs</TabsTrigger>
-          <TabsTrigger value="activity" className="flex-1">Activity</TabsTrigger>
+        <TabsList className="w-full mb-4 rounded-xl">
+          <TabsTrigger value="tokens" className="flex-1 rounded-xl">Tokens</TabsTrigger>
+          <TabsTrigger value="nfts" className="flex-1 rounded-xl">NFTs</TabsTrigger>
+          <TabsTrigger value="activity" className="flex-1 rounded-xl">Activity</TabsTrigger>
         </TabsList>
         
         <TabsContent value="tokens">
