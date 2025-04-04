@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, ChevronDown, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +8,8 @@ import { TokenList, Token } from "@/components/wallet/TokenList";
 import { TransactionHistory, Transaction } from "@/components/wallet/TransactionHistory";
 import { BottomNav } from "@/components/wallet/BottomNav";
 import { CreateWalletForm } from "@/components/wallet/CreateWalletForm";
+import { ImportWalletForm } from "@/components/wallet/ImportWalletForm";
+import { OnboardingFlow } from "@/components/wallet/OnboardingFlow";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 
@@ -81,55 +83,127 @@ const mockTransactions: Transaction[] = [
 ];
 
 const Index = () => {
-  const [hasWallet, setHasWallet] = useState(true);
+  const [hasWallet, setHasWallet] = useState<boolean | null>(null);
   const [showCreateWallet, setShowCreateWallet] = useState(false);
+  const [showImportWallet, setShowImportWallet] = useState(false);
+  const [isFirstLaunch, setIsFirstLaunch] = useState(true);
+  const [onboardingComplete, setOnboardingComplete] = useState(false);
   
+  useEffect(() => {
+    // In a real app, this would check local storage or secure storage
+    // to determine if a wallet exists and if it's the user's first launch
+    const checkWalletStatus = async () => {
+      // Simulate loading from storage
+      setTimeout(() => {
+        // For demo purposes, we'll assume no wallet exists initially
+        setHasWallet(false);
+        
+        // Check if this is the first time the app is launched
+        // In a real app, this would be stored in AsyncStorage/SecureStore
+        const firstLaunch = true; // Simulating first launch
+        setIsFirstLaunch(firstLaunch);
+      }, 500);
+    };
+    
+    checkWalletStatus();
+  }, []);
+
   const handleCreateWallet = () => {
-    setHasWallet(true);
+    setShowCreateWallet(true);
+    setShowImportWallet(false);
+  };
+  
+  const handleImportWallet = () => {
+    setShowImportWallet(true);
     setShowCreateWallet(false);
   };
+  
+  const handleWalletCreated = () => {
+    setHasWallet(true);
+    setShowCreateWallet(false);
+    setShowImportWallet(false);
+  };
+  
+  const handleOnboardingComplete = () => {
+    setOnboardingComplete(true);
+  };
 
-  if (!hasWallet) {
+  // Show loading state while checking wallet status
+  if (hasWallet === null) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 wallet-gradient text-white">
-        <div className="max-w-sm w-full text-center">
-          <h1 className="text-3xl font-bold mb-2">AssetGlide</h1>
-          <p className="text-white/70 mb-8">
-            The ultimate crypto wallet for your digital assets
-          </p>
-          
-          <div className="space-y-4">
-            <Button
-              size="lg"
-              className="w-full bg-wallet-teal hover:bg-wallet-teal/90 text-white"
-              onClick={() => setShowCreateWallet(true)}
-            >
-              Create New Wallet
-            </Button>
-            
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full text-white border-white/30 hover:bg-white/10"
-            >
-              Import Existing Wallet
-            </Button>
-          </div>
-          
-          <p className="mt-8 text-xs text-white/50">
-            By continuing, you agree to our Terms of Service and Privacy Policy
-          </p>
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 wallet-gradient">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-20 w-20 bg-white/20 rounded-full mb-4"></div>
+          <div className="h-6 w-40 bg-white/20 rounded mb-2"></div>
+          <div className="h-4 w-60 bg-white/10 rounded"></div>
         </div>
-        
-        <Dialog open={showCreateWallet} onOpenChange={setShowCreateWallet}>
-          <DialogContent className="max-w-sm mx-auto">
-            <CreateWalletForm onComplete={handleCreateWallet} />
-          </DialogContent>
-        </Dialog>
       </div>
     );
   }
 
+  // First-time user flow with onboarding
+  if (!hasWallet) {
+    // Show onboarding for first launch users who haven't completed it
+    if (isFirstLaunch && !onboardingComplete) {
+      return (
+        <div className="min-h-screen wallet-gradient text-white">
+          <OnboardingFlow 
+            onComplete={handleOnboardingComplete} 
+            onCreateWallet={handleCreateWallet}
+            onImportWallet={handleImportWallet}
+          />
+        </div>
+      );
+    }
+    
+    // Show wallet creation options after onboarding or for returning users
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 wallet-gradient text-white">
+        <div className="max-w-sm w-full">
+          {showCreateWallet ? (
+            <CreateWalletForm onComplete={handleWalletCreated} />
+          ) : showImportWallet ? (
+            <ImportWalletForm 
+              onComplete={handleWalletCreated} 
+              onBack={() => setShowImportWallet(false)}
+            />
+          ) : (
+            <div className="text-center">
+              <h1 className="text-3xl font-bold mb-2">AssetGlide</h1>
+              <p className="text-white/70 mb-8">
+                The ultimate crypto wallet for your digital assets
+              </p>
+              
+              <div className="space-y-4">
+                <Button
+                  size="lg"
+                  className="w-full bg-wallet-teal hover:bg-wallet-teal/90 text-white"
+                  onClick={handleCreateWallet}
+                >
+                  Create New Wallet
+                </Button>
+                
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full text-white border-white/30 hover:bg-white/10"
+                  onClick={handleImportWallet}
+                >
+                  Import Existing Wallet
+                </Button>
+              </div>
+              
+              <p className="mt-8 text-xs text-white/50">
+                By continuing, you agree to our Terms of Service and Privacy Policy
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Main wallet interface for users with existing wallets
   return (
     <div className="min-h-screen pb-20">
       <header className="wallet-gradient text-white p-4">
