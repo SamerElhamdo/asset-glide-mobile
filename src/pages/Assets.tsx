@@ -1,3 +1,4 @@
+
 import { BottomNav } from "@/components/wallet/BottomNav";
 import { BackButton } from "@/components/wallet/BackButton";
 import { Card, CardContent } from "@/components/ui/card";
