@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Check, Copy, Eye, EyeOff, RefreshCw, Shield, AlertCircle, ArrowRight } from "lucide-react";
+import { Check, Copy, Eye, EyeOff, RefreshCw, Shield, AlertCircle, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
