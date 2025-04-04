@@ -62,6 +62,21 @@ export function OnboardingFlow({ onComplete, onCreateWallet, onImportWallet }: O
     }
   };
   
+  // Fixed handlers to directly call the parent functions
+  const handleCreateWallet = () => {
+    // First complete the onboarding
+    onComplete();
+    // Then trigger wallet creation
+    setTimeout(() => onCreateWallet(), 100);
+  };
+  
+  const handleImportWallet = () => {
+    // First complete the onboarding
+    onComplete();
+    // Then trigger wallet import
+    setTimeout(() => onImportWallet(), 100);
+  };
+  
   return (
     <motion.div
       key={`onboarding-${currentStep}`}
@@ -87,7 +102,7 @@ export function OnboardingFlow({ onComplete, onCreateWallet, onImportWallet }: O
       {currentStep === 1 && (
         <div className="grid gap-4 w-full max-w-xs mb-8">
           <Button 
-            onClick={onCreateWallet}
+            onClick={handleCreateWallet}
             className="flex items-center justify-start px-4 py-6 h-auto"
             size="lg"
           >
@@ -101,7 +116,7 @@ export function OnboardingFlow({ onComplete, onCreateWallet, onImportWallet }: O
           </Button>
           
           <Button 
-            onClick={onImportWallet}
+            onClick={handleImportWallet}
             variant="outline"
             className="flex items-center justify-start px-4 py-6 h-auto"
             size="lg"
