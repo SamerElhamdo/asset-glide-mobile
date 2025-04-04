@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Plus, ChevronDown, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -92,17 +91,12 @@ const Index = () => {
   const { toast } = useToast();
   
   useEffect(() => {
-    // In a real app, this would check local storage or secure storage
-    // to determine if a wallet exists and if it's the user's first launch
     const checkWalletStatus = async () => {
       try {
-        // Simulate loading from storage
         setTimeout(() => {
-          // Check if wallet data exists in localStorage
           const walletData = localStorage.getItem('assetglide_wallet');
           setHasWallet(!!walletData);
           
-          // Check if this is the first time the app is launched
           const hasCompletedOnboarding = localStorage.getItem('assetglide_onboarding_complete');
           setIsFirstLaunch(!hasCompletedOnboarding);
           setOnboardingComplete(!!hasCompletedOnboarding);
@@ -128,13 +122,11 @@ const Index = () => {
   };
   
   const handleWalletCreated = () => {
-    // Save wallet state to localStorage (in a real app, this would encrypt with the password)
     localStorage.setItem('assetglide_wallet', JSON.stringify({
       created: new Date().toISOString(),
       lastAccess: new Date().toISOString()
     }));
     
-    // Mark onboarding as complete
     localStorage.setItem('assetglide_onboarding_complete', 'true');
     
     setHasWallet(true);
@@ -152,7 +144,6 @@ const Index = () => {
     setOnboardingComplete(true);
   };
 
-  // Show loading state while checking wallet status
   if (hasWallet === null) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 wallet-gradient">
@@ -165,9 +156,7 @@ const Index = () => {
     );
   }
 
-  // First-time user flow with onboarding
   if (!hasWallet) {
-    // Show onboarding for first launch users who haven't completed it
     if (isFirstLaunch && !onboardingComplete) {
       return (
         <div className="min-h-screen wallet-gradient text-white">
@@ -180,7 +169,6 @@ const Index = () => {
       );
     }
     
-    // Show wallet creation options after onboarding or for returning users
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 wallet-gradient text-white">
         <div className="max-w-sm w-full">
@@ -227,36 +215,61 @@ const Index = () => {
     );
   }
 
-  // Main wallet interface for users with existing wallets
   return (
     <div className="min-h-screen pb-20">
-      <header className="wallet-gradient text-white p-4">
+      <header className="wallet-gradient text-white p-4 rounded-b-2xl shadow-lg">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <h1 className="text-xl font-bold">AssetGlide</h1>
-            <Button variant="ghost" size="sm" className="text-white ml-1 p-1 h-auto">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white ml-1 p-1 h-auto rounded-full"
+            >
               <ChevronDown size={18} />
             </Button>
           </div>
           
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" className="text-white">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-white rounded-full hover:bg-white/20"
+            >
               <Bell size={20} />
             </Button>
             
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="sm" className="bg-white/20 hover:bg-white/30 text-white">
+                <Button 
+                  size="sm" 
+                  className="bg-white/20 hover:bg-white/30 text-white rounded-xl"
+                >
                   <Plus size={16} className="mr-1" />
                   Add
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-xs mx-auto">
+              <DialogContent className="max-w-xs mx-auto rounded-2xl">
                 <h3 className="text-lg font-medium mb-4">Add New</h3>
                 <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start">Add Token</Button>
-                  <Button variant="outline" className="w-full justify-start">Connect dApp</Button>
-                  <Button variant="outline" className="w-full justify-start">Buy Crypto</Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start rounded-xl"
+                  >
+                    Add Token
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start rounded-xl"
+                  >
+                    Connect dApp
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start rounded-xl"
+                  >
+                    Buy Crypto
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
