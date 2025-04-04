@@ -21,6 +21,7 @@ export function PreferencesSection({
     toast({
       title: `Notifications ${checked ? 'Enabled' : 'Disabled'}`,
       description: `You will ${checked ? 'now' : 'no longer'} receive transaction and price alerts.`,
+      className: "rounded-lg", // Add border-radius
     });
   };
   
