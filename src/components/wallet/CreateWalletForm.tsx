@@ -21,14 +21,10 @@ const generateSeedPhrase = () => {
     "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert"
   ];
   
-  const result = [];
-  for (let i = 0; i < 12; i++) {
-    const randomIndex = Math.floor(Math.random() * wordList.length);
-    result.push(wordList[randomIndex]);
-  }
-  
-  return result.join(" ");
+  const shuffled = wordList.sort(() => Math.random() - 0.5); // Shuffle words randomly
+  return shuffled.slice(0, 12).join(" "); // Take the first 12 unique words
 };
+
 
 export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
   const { toast } = useToast();
