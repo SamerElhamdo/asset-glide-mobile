@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { BottomNav } from "@/components/wallet/BottomNav";
 import { BackButton } from "@/components/wallet/BackButton";
@@ -63,7 +62,7 @@ const Browser = () => {
   
   return (
     <div className="min-h-screen pb-20">
-      <header className="bg-background border-b p-4">
+      <header className="bg-background border-b rounded-b-2xl p-4">
         <div className="flex items-center mb-2">
           <BackButton to="/" />
           <h1 className="text-xl font-bold">Browser</h1>
@@ -98,7 +97,7 @@ const Browser = () => {
             <h2 className="text-lg font-medium">Popular DApps</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {popularDApps.map((dapp) => (
-                <Card key={dapp.id} className="text-center">
+                <Card key={dapp.id} className="text-center rounded-2xl">
                   <CardContent className="pt-4">
                     <div className="mb-2 mx-auto w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-gray-100">
                       <img src={dapp.icon} alt={dapp.name} className="w-8 h-8" />
@@ -109,7 +108,7 @@ const Browser = () => {
                 </Card>
               ))}
               
-              <Card className="text-center border-dashed">
+              <Card className="text-center border-dashed rounded-2xl">
                 <CardContent className="pt-4 flex flex-col items-center justify-center h-full">
                   <div className="mb-2 w-12 h-12 rounded-full flex items-center justify-center bg-gray-100">
                     <Plus size={20} className="text-muted-foreground" />

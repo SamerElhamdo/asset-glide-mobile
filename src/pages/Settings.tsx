@@ -12,7 +12,7 @@ const Settings = () => {
   
   return (
     <div className="min-h-screen pb-20">
-      <header className="wallet-gradient text-white p-4">
+      <header className="wallet-gradient text-white rounded-b-2xl p-4">
         <div className="flex items-center">
           <BackButton to="/" />
           <div>

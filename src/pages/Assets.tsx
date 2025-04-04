@@ -1,4 +1,3 @@
-
 import { BottomNav } from "@/components/wallet/BottomNav";
 import { BackButton } from "@/components/wallet/BackButton";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,7 +46,7 @@ const mockAssets: AssetItem[] = [
 const Assets = () => {
   return (
     <div className="min-h-screen pb-20">
-      <header className="wallet-gradient text-white p-4">
+      <header className="wallet-gradient text-white rounded-b-2xl p-4">
         <div className="flex items-center">
           <BackButton to="/" />
           <div>
@@ -60,7 +59,7 @@ const Assets = () => {
       <main className="p-4">
         <div className="space-y-4">
           {mockAssets.map((asset) => (
-            <Card key={asset.id} className="overflow-hidden">
+            <Card key={asset.id} className="overflow-hidden rounded-2xl">
               <CardContent className="p-0">
                 <div className="flex items-center p-4">
                   <div className="flex-shrink-0 w-10 h-10 mr-3 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
