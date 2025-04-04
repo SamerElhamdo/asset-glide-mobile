@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Assets from "./pages/Assets";
 import Browser from "./pages/Browser";
 import Settings from "./pages/Settings";
+import SecurityCenter from "./pages/SecurityCenter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/assets" element={<Assets />} />
           <Route path="/browser" element={<Browser />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/security-center" element={<SecurityCenter />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
