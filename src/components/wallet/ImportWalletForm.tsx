@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Eye, EyeOff, AlertCircle, CheckCircle, ArrowRight, ArrowLeft, Shield, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,9 +26,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  // In a real app, this would validate BIP39 phrases or hex private keys
   const validateInput = () => {
-    // Reset any previous errors
     setError(null);
     
     if (importMethod === 'seed') {
@@ -44,7 +41,6 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
         return false;
       }
     } else {
-      // Enhanced validation for private key (hex string)
       if (!/^(0x)?[0-9a-fA-F]{64}$/.test(privateKey)) {
         setError("Private key must be a valid 64 character hex string (with optional 0x prefix)");
         toast({
@@ -95,21 +91,10 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
     setIsLoading(true);
     
     try {
-      // Simulate wallet import process
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // In a real app with expo-secure-store, we would use:
-      // await SecureStore.setItemAsync('wallet_data', JSON.stringify({
-      //   type: importMethod,
-      //   data: importMethod === 'seed' ? seedPhrase : privateKey,
-      //   name: walletName,
-      //   createdAt: new Date().toISOString()
-      // }), { requireAuthentication: true });
-      
-      // Since we're in a web context, use localStorage with encryption hint
       const walletData = {
         type: importMethod,
-        // In a real app, this would be encrypted with the password
         data: importMethod === 'seed' ? seedPhrase : privateKey,
         name: walletName,
         createdAt: new Date().toISOString()
@@ -121,7 +106,6 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
         lastAccess: new Date().toISOString()
       }));
       
-      // Store encrypted data hint (in a real app with proper encryption)
       localStorage.setItem('assetglide_wallet_secure', JSON.stringify({
         isEncrypted: true,
         hint: `${importMethod}_wallet_${new Date().toISOString()}`
@@ -187,7 +171,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
                 setError(null);
               }}
               rows={4}
-              className="font-mono"
+              className="font-mono dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             />
             <p className="text-xs text-muted-foreground flex items-center">
               <Shield size={12} className="mr-1" />
@@ -207,7 +191,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
                 setPrivateKey(e.target.value);
                 setError(null);
               }}
-              className="font-mono"
+              className="font-mono dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             />
             <p className="text-xs text-muted-foreground flex items-center">
               <LockKeyhole size={12} className="mr-1" />
@@ -227,7 +211,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
             setWalletName(e.target.value);
             setError(null);
           }}
-          className="bg-background"
+          className="dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
         />
       </div>
       
@@ -243,7 +227,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
               setPassword(e.target.value);
               setError(null);
             }}
-            className="bg-background"
+            className="dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
           />
           <button
             type="button"
@@ -270,7 +254,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
             setConfirmPassword(e.target.value);
             setError(null);
           }}
-          className="bg-background"
+          className="dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
         />
       </div>
       

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Check, Copy, Eye, EyeOff, RefreshCw, Shield, AlertCircle, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,6 @@ interface CreateWalletFormProps {
   onComplete: () => void;
 }
 
-// Helper function to generate a mock seed phrase
-// In a real app, this would use a cryptographic library
 const generateSeedPhrase = () => {
   const wordList = [
     "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",
@@ -43,7 +40,6 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  // This would come from a crypto library in a real implementation
   const [mockSeedPhrase] = useState(generateSeedPhrase());
   const seedPhraseWords = mockSeedPhrase.split(" ");
   
@@ -104,33 +100,25 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
       
       setStep('backup');
     } else if (step === 'backup') {
-      // In a real app, we'd verify the user has backed up their seed phrase
-      // For now, we'll just shuffle the words for verification
       const shuffledWords = [...seedPhraseWords].sort(() => Math.random() - 0.5);
       setVerificationWords(shuffledWords);
       setStep('verify');
     } else if (step === 'verify') {
-      // Check if selected words match the original seed phrase
       const isCorrect = selectedWords.join(' ') === mockSeedPhrase;
       
       if (isCorrect) {
         setIsLoading(true);
         
         try {
-          // Simulate wallet creation process
           await new Promise(resolve => setTimeout(resolve, 1500));
-          
-          // In a real app, this would initialize the wallet from the seed phrase
-          // and store it encrypted with the password
           
           toast({
             title: "Wallet created!",
             description: "Your wallet has been successfully created.",
           });
           
-          // Store wallet information (in a real app, this would be encrypted and secured)
           localStorage.setItem('assetglide_wallet_seed', JSON.stringify({
-            seedPhrase: mockSeedPhrase, // In a real app, NEVER store the seed phrase unencrypted
+            seedPhrase: mockSeedPhrase,
             walletName: walletName,
             createdAt: new Date().toISOString()
           }));
@@ -190,6 +178,7 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
               placeholder="My Wallet"
               value={walletName}
               onChange={(e) => setWalletName(e.target.value)}
+              className="dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             />
           </div>
           
@@ -202,6 +191,7 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
                 placeholder="Min. 8 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               />
               <button
                 type="button"
@@ -221,6 +211,7 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
               placeholder="Confirm your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              className="dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             />
           </div>
           
