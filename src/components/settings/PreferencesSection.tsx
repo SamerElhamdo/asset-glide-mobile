@@ -41,7 +41,7 @@ export function PreferencesSection({
   return (
     <section>
       <h2 className="text-lg font-medium mb-2">Preferences</h2>
-      <div className="space-y-2 rounded-lg border bg-card overflow-hidden">
+      <div className="space-y-2 rounded-2xl border bg-card overflow-hidden">
         <SettingsItem
           icon={<Bell size={20} />}
           title="Notifications"
