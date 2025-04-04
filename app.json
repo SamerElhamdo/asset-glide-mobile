@@ -1,0 +1,33 @@
+
+{
+  "expo": {
+    "name": "AssetGlide",
+    "slug": "asset-glide",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./public/favicon.ico",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./public/placeholder.svg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.lovable.assetglide"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./public/favicon.ico",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "app.lovable.assetglide"
+    },
+    "web": {
+      "favicon": "./public/favicon.ico"
+    }
+  }
+}

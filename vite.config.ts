@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -17,6 +18,14 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "react-native": "react-native-web" // Add support for react-native components
     },
   },
+  // Support for Expo and React Native
+  define: {
+    __DEV__: mode === 'development',
+    process: {
+      env: {}
+    }
+  }
 }));
