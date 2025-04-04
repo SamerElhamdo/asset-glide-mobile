@@ -23,7 +23,7 @@ export function SecuritySection() {
   return (
     <section>
       <h2 className="text-lg font-medium mb-2">Security</h2>
-      <div className="space-y-2 rounded-2xl border bg-card overflow-hidden">
+      <div className="space-y-2 rounded-2xl bg-card overflow-hidden">
         <SettingsItem
           icon={<Shield size={20} />}
           title="Security Center"

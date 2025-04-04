@@ -32,7 +32,7 @@ export function SupportSection() {
   return (
     <section>
       <h2 className="text-lg font-medium mb-2">Support</h2>
-      <div className="space-y-2 rounded-2xl border bg-card overflow-hidden">
+      <div className="space-y-2 rounded-2xl bg-card overflow-hidden">
         <SettingsItem
           icon={<HelpCircle size={20} />}
           title="Help Center"
