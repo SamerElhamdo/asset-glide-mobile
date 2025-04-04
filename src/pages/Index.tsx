@@ -12,6 +12,7 @@ import { ImportWalletForm } from "@/components/wallet/ImportWalletForm";
 import { OnboardingFlow } from "@/components/wallet/OnboardingFlow";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 const mockTokens: Token[] = [
   {
@@ -88,21 +89,29 @@ const Index = () => {
   const [showImportWallet, setShowImportWallet] = useState(false);
   const [isFirstLaunch, setIsFirstLaunch] = useState(true);
   const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const { toast } = useToast();
   
   useEffect(() => {
     // In a real app, this would check local storage or secure storage
     // to determine if a wallet exists and if it's the user's first launch
     const checkWalletStatus = async () => {
-      // Simulate loading from storage
-      setTimeout(() => {
-        // For demo purposes, we'll assume no wallet exists initially
+      try {
+        // Simulate loading from storage
+        setTimeout(() => {
+          // Check if wallet data exists in localStorage
+          const walletData = localStorage.getItem('assetglide_wallet');
+          setHasWallet(!!walletData);
+          
+          // Check if this is the first time the app is launched
+          const hasCompletedOnboarding = localStorage.getItem('assetglide_onboarding_complete');
+          setIsFirstLaunch(!hasCompletedOnboarding);
+          setOnboardingComplete(!!hasCompletedOnboarding);
+        }, 500);
+      } catch (error) {
+        console.error("Error checking wallet status:", error);
         setHasWallet(false);
-        
-        // Check if this is the first time the app is launched
-        // In a real app, this would be stored in AsyncStorage/SecureStore
-        const firstLaunch = true; // Simulating first launch
-        setIsFirstLaunch(firstLaunch);
-      }, 500);
+        setIsFirstLaunch(true);
+      }
     };
     
     checkWalletStatus();
@@ -119,12 +128,27 @@ const Index = () => {
   };
   
   const handleWalletCreated = () => {
+    // Save wallet state to localStorage (in a real app, this would encrypt with the password)
+    localStorage.setItem('assetglide_wallet', JSON.stringify({
+      created: new Date().toISOString(),
+      lastAccess: new Date().toISOString()
+    }));
+    
+    // Mark onboarding as complete
+    localStorage.setItem('assetglide_onboarding_complete', 'true');
+    
     setHasWallet(true);
     setShowCreateWallet(false);
     setShowImportWallet(false);
+    
+    toast({
+      title: "Wallet Ready!",
+      description: "Your wallet has been set up and is ready to use.",
+    });
   };
   
   const handleOnboardingComplete = () => {
+    localStorage.setItem('assetglide_onboarding_complete', 'true');
     setOnboardingComplete(true);
   };
 

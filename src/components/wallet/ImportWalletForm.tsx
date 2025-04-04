@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Eye, EyeOff, AlertCircle, CheckCircle, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, AlertCircle, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +23,7 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [importMethod, setImportMethod] = useState<'seed' | 'private'>('seed');
+  const [isLoading, setIsLoading] = useState(false);
   
   // In a real app, this would validate BIP39 phrases or hex private keys
   const validateInput = () => {
@@ -78,16 +79,33 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
     return true;
   };
   
-  const handleImport = () => {
+  const handleImport = async () => {
     if (!validateInput()) return;
     
-    // In a real app, this would initialize the wallet from the seed/key
-    toast({
-      title: "Wallet imported!",
-      description: "Your wallet has been successfully imported.",
-    });
+    setIsLoading(true);
     
-    onComplete();
+    try {
+      // Simulate wallet import process
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // In a real app, this would initialize the wallet from the seed/key
+      // and store it encrypted with the password
+      
+      toast({
+        title: "Wallet imported!",
+        description: "Your wallet has been successfully imported.",
+      });
+      
+      onComplete();
+    } catch (error) {
+      toast({
+        title: "Import failed",
+        description: "There was an error importing your wallet. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -201,12 +219,17 @@ export function ImportWalletForm({ onComplete, onBack }: ImportWalletFormProps) 
       </div>
       
       <div className="flex gap-4 pt-4">
-        <Button variant="outline" className="flex-1" onClick={onBack}>
+        <Button variant="outline" className="flex-1" onClick={onBack} disabled={isLoading}>
+          <ArrowLeft size={16} className="mr-2" />
           Back
         </Button>
-        <Button className="flex-1" onClick={handleImport}>
-          Import Wallet
-          <ArrowRight size={16} className="ml-2" />
+        <Button 
+          className="flex-1" 
+          onClick={handleImport} 
+          disabled={isLoading}
+        >
+          {isLoading ? 'Importing...' : 'Import Wallet'}
+          {!isLoading && <ArrowRight size={16} className="ml-2" />}
         </Button>
       </div>
     </motion.div>

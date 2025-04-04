@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Check, Copy, Eye, EyeOff, RefreshCw, Shield } from "lucide-react";
+import { Check, Copy, Eye, EyeOff, RefreshCw, Shield, AlertCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,26 @@ interface CreateWalletFormProps {
   onComplete: () => void;
 }
 
+// Helper function to generate a mock seed phrase
+// In a real app, this would use a cryptographic library
+const generateSeedPhrase = () => {
+  const wordList = [
+    "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",
+    "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act",
+    "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit",
+    "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent",
+    "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert"
+  ];
+  
+  const result = [];
+  for (let i = 0; i < 12; i++) {
+    const randomIndex = Math.floor(Math.random() * wordList.length);
+    result.push(wordList[randomIndex]);
+  }
+  
+  return result.join(" ");
+};
+
 export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
   const { toast } = useToast();
   const [step, setStep] = useState<'create' | 'backup' | 'verify'>('create');
@@ -20,9 +40,10 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   // This would come from a crypto library in a real implementation
-  const mockSeedPhrase = "witch collapse practice feed shame open despair creek road again ice least";
+  const [mockSeedPhrase] = useState(generateSeedPhrase());
   const seedPhraseWords = mockSeedPhrase.split(" ");
   
   const [showSeed, setShowSeed] = useState(false);
@@ -41,7 +62,7 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
     });
   };
   
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     if (step === 'create') {
       if (!walletName) {
         toast({
@@ -91,11 +112,37 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
       const isCorrect = selectedWords.join(' ') === mockSeedPhrase;
       
       if (isCorrect) {
-        toast({
-          title: "Wallet created!",
-          description: "Your wallet has been successfully created.",
-        });
-        onComplete();
+        setIsLoading(true);
+        
+        try {
+          // Simulate wallet creation process
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          
+          // In a real app, this would initialize the wallet from the seed phrase
+          // and store it encrypted with the password
+          
+          toast({
+            title: "Wallet created!",
+            description: "Your wallet has been successfully created.",
+          });
+          
+          // Store wallet information (in a real app, this would be encrypted and secured)
+          localStorage.setItem('assetglide_wallet_seed', JSON.stringify({
+            seedPhrase: mockSeedPhrase, // In a real app, NEVER store the seed phrase unencrypted
+            walletName: walletName,
+            createdAt: new Date().toISOString()
+          }));
+          
+          onComplete();
+        } catch (error) {
+          toast({
+            title: "Wallet creation failed",
+            description: "There was an error creating your wallet. Please try again.",
+            variant: "destructive",
+          });
+        } finally {
+          setIsLoading(false);
+        }
       } else {
         toast({
           title: "Incorrect seed phrase",
@@ -312,19 +359,36 @@ export function CreateWalletForm({ onComplete }: CreateWalletFormProps) {
                     : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
                   }`}
                 onClick={() => handleWordSelect(word)}
-                disabled={selectedWords.includes(word)}
+                disabled={selectedWords.includes(word) || isLoading}
               >
                 {word}
               </button>
             ))}
           </div>
           
+          {selectedWords.length === seedPhraseWords.length && (
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mt-4">
+              <div className="flex items-start">
+                <CheckCircle className="text-green-600 dark:text-green-400 mr-3 mt-0.5" size={18} />
+                <div>
+                  <p className="text-sm font-medium text-green-800 dark:text-green-300">
+                    All words selected
+                  </p>
+                  <p className="text-xs mt-1 text-green-700 dark:text-green-400">
+                    Verify that your words are in the correct order before proceeding.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <Button 
             className="w-full mt-6" 
             onClick={handleNextStep}
-            disabled={selectedWords.length !== seedPhraseWords.length}
+            disabled={selectedWords.length !== seedPhraseWords.length || isLoading}
           >
-            Verify & Create Wallet
+            {isLoading ? 'Creating Wallet...' : 'Verify & Create Wallet'}
+            {!isLoading && <ArrowRight size={16} className="ml-2" />}
           </Button>
         </div>
       )}
